@@ -1,0 +1,3 @@
+@echo off
+echo LingoBox Python API sunucusunu başlatıyor...
+python app.py 

@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  # Laravel Web Uygulaması
+  app:
+    image: php:8.2-fpm
+    container_name: lingobox_app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - python_api
+    networks:
+      - lingobox_network
+
+  # Web Sunucusu
+  nginx:
+    image: nginx:latest
+    container_name: lingobox_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - lingobox_network
+
+  # MySQL Veritabanı
+  db:
+    image: mysql:8.0
+    container_name: lingobox_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - lingobox_mysql_data:/var/lib/mysql
+    networks:
+      - lingobox_network
+
+  # Python API Servisi
+  python_api:
+    build:
+      context: ./python_api
+      dockerfile: Dockerfile
+    container_name: lingobox_python_api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./python_api:/app
+    networks:
+      - lingobox_network
+
+networks:
+  lingobox_network:
+    driver: bridge
+
+volumes:
+  lingobox_mysql_data: 

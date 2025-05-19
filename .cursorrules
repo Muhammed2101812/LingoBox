@@ -1,0 +1,128 @@
+Proje Adı: LingoBox – Dil Kartları ve Çeviri Platformu
+
+=====================================
+1. GENEL AÇIKLAMA
+=====================================
+Bu proje, kullanıcıların farklı dillerde kelimeleri öğrenmesini kolaylaştıran bir çeviri ve tekrar uygulamasıdır. 
+Laravel ile geliştirilecek bu platformda kullanıcılar kendi çevirilerini ekleyebilir, flashcard şeklinde tekrar yapabilir, 
+quiz çözebilir ve gelişimlerini takip edebilir.
+
+=====================================
+2. KULLANILACAK TEKNOLOJİLER
+=====================================
+- Backend: Laravel 10+
+- Frontend: Blade
+- Veritabanı: MySQL
+- Diğer: Tailwind CSS, Chart.js (istatistikler), Laravel Breeze (auth)
+
+=====================================
+3. VERİ TABANI TASARIMI
+=====================================
+
+TABLE: users
+- id
+- name
+- email
+- password
+
+TABLE: languages
+- id
+- name (örn: Arapça)
+- code (örn: ar)
+
+TABLE: translations
+- id
+- user_id
+- source_text
+- target_text
+- source_lang_id
+- target_lang_id
+- category (örn: Meyveler)
+- example_sentence (isteğe bağlı)
+- created_at / updated_at
+
+TABLE: flashcard_progress
+- id
+- user_id
+- translation_id
+- status (known / unknown)
+- last_reviewed_at
+
+TABLE: quizzes
+- id
+- user_id
+- score
+- total_questions
+- created_at
+
+TABLE: quiz_questions
+- id
+- quiz_id
+- translation_id
+- user_answer
+- correct (bool)
+
+=====================================
+4. ÖZELLİKLER
+=====================================
+
+🔐 AUTHENTICATION
+- Kullanıcı kayıt, giriş, çıkış
+- Kullanıcı bilgilerini güncelleme
+
+📚 KELİME EKLEME
+- Kelime/Cümle giriş alanı
+- Hedef ve kaynak dil seçimi
+- Kategori seçimi
+- Örnek cümle
+
+📖 FLASHCARD MODÜLÜ
+- Kelimeleri kart şeklinde göster
+- “Biliyorum / Bilmiyorum” butonları
+- Her tıklamada diğer karta geçiş
+
+🧪 QUIZ MODÜLÜ
+- Rastgele 10 kelime seçilir
+- Çoktan seçmeli test soruları
+- Sonuç ekranı (% başarı, doğru sayısı)
+- Veritabanına kayıt
+
+📈 İSTATİSTİK MODÜLÜ
+- Toplam kelime
+- Quiz başarı oranı
+- En çok tekrar edilen kategori
+
+🔍 ARAMA / FİLTRELEME
+- Kelime arama (iki dilde)
+- Kategoriye göre filtreleme
+- Sadece kullanıcıya ait kelimeler
+
+=====================================
+5. ROTALAR (routes/web.php)
+=====================================
+
+GET / => Ana sayfa
+GET /login => Giriş sayfası
+GET /register => Kayıt sayfası
+GET /dashboard => Kullanıcı paneli
+
+GET /translations => Kullanıcının kelimeleri
+POST /translations => Yeni çeviri ekle
+
+GET /flashcards => Flashcard sayfası
+POST /flashcards/know => Bilinen olarak işaretle
+POST /flashcards/dontknow => Bilinmeyen olarak işaretle
+
+GET /quiz => Quiz başlat
+POST /quiz => Quiz verilerini kaydet
+
+GET /stats => Kullanıcı istatistikleri
+
+=====================================
+6. GELECEK GELİŞTİRMELER (Opsiyonel)
+=====================================
+- Resim ve ses ekleme desteği
+- Topluluk katkısı (oylama sistemi)
+- Günlük hedef sistemi (günlük 10 kelime vs.)
+- Mobil uygulama (Laravel backend + Flutter/React Native)
+
