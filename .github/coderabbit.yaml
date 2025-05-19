@@ -1,0 +1,18 @@
+version: 1
+reviews:
+  auto_review:
+    enabled: true
+    drafts: false  # draft PR'ları inceleme
+    summary:
+      enabled: true
+      type: final  # veya "original" ya da "refresh"
+    # Yorum ayarları
+    comments:
+      enabled: true  # Kod satırlarına yorum yapmasını etkinleştir
+  
+language_settings:
+  turkish:
+    synonyms:
+      - turkish
+      - türkçe
+    locale: tr 
